@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google: El Algoritmo del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700&family=Roboto+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === VARIABLES & RESET === */
+        :root {
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --bg-dark: #050505;
+            --text-main: #E8EAED;
+            --text-muted: #9AA0A6;
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            width: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--g-blue); }
+
+        /* === BACKGROUND CANVAS === */
+        #network-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            opacity: 0.6;
+        }
+
+        /* Ambient Glow */
+        .ambient-glow {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 80vw; height: 80vh;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(66, 133, 244, 0.05) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* === HEADER EXTREMO === */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 2rem;
+            animation: floatLogo 6s ease-in-out infinite;
+        }
+
+        .g-letter {
+            font-family: 'Product Sans', sans-serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .g-letter:hover { transform: translateY(-20px) scale(1.1); }
+        .c-b { color: var(--g-blue); }
+        .c-r { color: var(--g-red); }
+        .c-y { color: var(--g-yellow); }
+        .c-g { color: var(--g-green); }
+
+        .hero-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-code {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--g-green);
+            background: rgba(52, 168, 83, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(52, 168, 83, 0.2);
+            margin-top: 2rem;
+        }
+
+        /* === ESTRUCTURA DE CONTENIDO === */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        /* Panels Glassmorphism */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 4rem;
+            margin-bottom: 4rem;
+            box-shadow: var(--glass-shadow);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .glass-panel.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .panel-title {
+            font-family: 'Product Sans', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* === TIMELINE DE ALTO RENDIMIENTO === */
+        .timeline-wrapper {
+            position: relative;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--g-blue), var(--g-red), var(--g-yellow), var(--g-green));
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease-out;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+            transform: translateX(50px);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-content {
+            width: 80%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content { margin-right: 3rem; }
+        .timeline-item:nth-child(even) .timeline-content { margin-left: 3rem; }
+
+        .timeline-dot {
+            position: absolute;
+            top: 50%;
+            right: -39px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 4px solid var(--g-blue);
+            transform: translateY(-50%);
+            z-index: 2;
+            box-shadow: 0 0 20px var(--g-blue);
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            right: auto;
+            left: -39px;
+        }
+
+        .tl-year {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .tl-title {
+            font-size: 1.5rem;
+            color: var(--g-blue);
+            margin-bottom: 1rem;
+        }
+
+        .tl-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* === ANIMACIONES === */
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .timeline-line { left: 30px; }
+            .timeline-item, .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 80px;
+                padding-right: 0;
+                transform: translateX(-30px);
+            }
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content { margin: 0; width: 100%; }
+            .timeline-item:nth-child(odd) .timeline-dot,
+            .timeline-item:nth-child(even) .timeline-dot {
+                left: -58px; right: auto;
+            }
+            .glass-panel { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="network-canvas"></canvas>
+    <div class="ambient-glow"></div>
+
+    <header>
+        <div class="logo-container">
+            <span class="g-letter c-b">G</span>
+            <span class="g-letter c-r">o</span>
+            <span class="g-letter c-y">o</span>
+            <span class="g-letter c-b">g</span>
+            <span class="g-letter c-g">l</span>
+            <span class="g-letter c-r">e</span>
+        </div>
+        <h1 class="hero-title">Organizando la información del mundo, haciéndola universalmente accesible y útil.</h1>
+        <div class="hero-code">> sudo execute PageRank_Algorithm.cpp</div>
+    </header>
+
+    <main class="main-container">
+        
+        <section class="glass-panel">
+            <h2 class="panel-title">1.0 - El Génesis Matemático</h2>
+            <p class="panel-text">La palabra "Google" no nació de un estudio de marketing, sino de un error de ortografía matemática. En 1920, el matemático estadounidense Edward Kasner le pidió a su sobrino de nueve años, Milton Sirotta, que inventara un nombre para un número gigantesco: un 1 seguido de cien ceros.</p>
+            <p class="panel-text">El niño respondió: <strong>"Googol"</strong> (Gúgol). Cuando Larry Page y Sergey Brin buscaban un nombre en 1997 que representara su misión de organizar una cantidad colosal de información, registraron el dominio basándose en este término, pero lo escribieron mal como "Google". El error se convirtió en la marca más valiosa del planeta.</p>
+            <div style="font-family: 'Roboto Mono'; color: var(--g-yellow); word-break: break-all; margin-top: 2rem; font-size: 0.8rem; opacity: 0.8;">
+                10,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000
+            </div>
+        </section>
+
+        <section class="glass-panel">
+            <h2 class="panel-title">2.0 - BackRub y el PageRank</h2>
+            <p class="panel-text">Antes de 1996, los motores de búsqueda (como AltaVista o Yahoo) ordenaban los resultados basándose en cuántas veces aparecía una palabra clave en una página. Era fácil de manipular.</p>
+            <p class="panel-text">Page y Brin desarrollaron en Stanford un algoritmo llamado <strong>BackRub</strong>. La genialidad radicaba en tratar la web como una red de citas académicas. Si una página era enlazada por muchas otras páginas importantes, entonces esa página debía ser importante. Así nació <strong>PageRank</strong> (nombrado en honor a Larry Page), un sistema que evaluaba la calidad y cantidad de enlaces para determinar la relevancia de un sitio web. Internet pasó del caos al orden matemático.</p>
+        </section>
+
+        <section class="glass-panel" style="padding: 2rem; background: transparent; border: none; box-shadow: none; backdrop-filter: none;">
+            <h2 class="panel-title" style="text-align: center; margin-bottom: 4rem;">El Registro de la Evolución</h2>
+            
+            <div class="timeline-wrapper">
+                <div class="timeline-line"></div>
+                <div id="dynamic-timeline"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer style="text-align: center; padding: 4rem; color: var(--text-muted); font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
+        <p>System Exit(0); // 1998 - Presente</p>
+    </footer>
+
+    <script>
+        /* =========================================================================
+           1. BASE DE DATOS MASIVA DE LA HISTORIA DE GOOGLE (JSON Array)
+           ========================================================================= */
+        const googleHistory = [
+            { year: "1995", title: "El Encuentro en Stanford", desc: "Larry Page (22 años) conoce a Sergey Brin (21 años). Brin es asignado para mostrarle a Page el campus de Stanford. Discrepan en todo, pero forjan una alianza histórica.", color: "var(--g-blue)" },
+            { year: "1996", title: "Proyecto BackRub", desc: "Comienzan a colaborar en un buscador que usa enlaces para determinar la importancia de páginas web. Lo ejecutan en los servidores de Stanford hasta que consume demasiado ancho de banda.", color: "var(--g-red)" },
+            { year: "1997", title: "google.com", desc: "El 15 de septiembre se registra oficialmente el dominio Google.com, nacido del error ortográfico de 'Googol'.", color: "var(--g-yellow)" },
+            { year: "1998", title: "El Garaje y el Primer Inversor", desc: "Andy Bechtolsheim firma un cheque de 100.000$ a nombre de 'Google Inc.', una empresa que aún no existía. Se instalan en el garaje de Susan Wojcicki (futura CEO de YouTube). Nace el primer Doodle (Burning Man).", color: "var(--g-green)" },
+            { year: "2000", title: "AdWords: El Motor Financiero", desc: "Google se convierte en el buscador más grande del mundo y lanza AdWords con 350 clientes, un sistema de anuncios no intrusivos basados en texto que cambiaría la publicidad digital para siempre.", color: "var(--g-blue)" },
+            { year: "2001", title: "Eric Schmidt y Google Imágenes", desc: "Larry y Sergey contratan a Eric Schmidt como CEO para 'supervisar a los adultos'. Nace Google Imágenes motivado por la inmensa demanda de fotos del vestido verde de Jennifer Lopez en los Grammy.", color: "var(--g-red)" },
+            { year: "2004", title: "Gmail y la Salida a Bolsa", desc: "El 1 de abril lanzan Gmail con 1GB de almacenamiento (100 veces más que la competencia). Muchos creyeron que era una broma. En agosto, salen a bolsa (IPO) a 85$ la acción.", color: "var(--g-yellow)" },
+            { year: "2005", title: "Google Maps y Android", desc: "Se lanza Google Maps. Además, adquieren discretamente una pequeña startup de software móvil llamada Android por 50 millones de dólares.", color: "var(--g-green)" },
+            { year: "2006", title: "La Era del Video y el Diccionario", desc: "Google compra YouTube por 1.650 millones de dólares. El diccionario de Oxford y Merriam-Webster añaden el verbo 'google' a sus páginas.", color: "var(--g-blue)" },
+            { year: "2008", title: "Nace Chrome", desc: "Google lanza su propio navegador web de código abierto, Google Chrome. Hoy en día es el navegador más utilizado del planeta.", color: "var(--g-red)" },
+            { year: "2015", title: "Reestructuración: Alphabet", desc: "Larry Page anuncia la creación de Alphabet Inc., un holding para agrupar a Google y todas sus ramificaciones (Waymo, DeepMind, Calico). Sundar Pichai se convierte en CEO de Google.", color: "var(--g-yellow)" },
+            { year: "2016", title: "IA First: DeepMind", desc: "AlphaGo, de Google DeepMind, derrota al campeón mundial Lee Sedol en el complejo juego de mesa Go, marcando un hito en la historia de la Inteligencia Artificial.", color: "var(--g-green)" },
+            { year: "2023", title: "La Era de Gemini", desc: "En respuesta a la revolución generativa, Google lanza Gemini, su modelo de Inteligencia Artificial multimodal más potente y capaz, integrándolo en el buscador y el ecosistema.", color: "var(--g-blue)" }
+        ];
+
+        /* =========================================================================
+           2. RENDERIZADO DINÁMICO DEL DOM (Inyectando la historia)
+           ========================================================================= */
+        const timelineContainer = document.getElementById('dynamic-timeline');
+
+        googleHistory.forEach((item, index) => {
+            const tlItem = document.createElement('div');
+            tlItem.className = 'timeline-item';
+            
+            tlItem.innerHTML = `
+                <div class="timeline-dot" style="border-color: ${item.color}; box-shadow: 0 0 15px ${item.color}"></div>
+                <div class="timeline-content">
+                    <span class="tl-year" style="color: ${item.color}">${item.year}</span>
+                    <h3 class="tl-title" style="color: ${item.color}">${item.title}</h3>
+                    <p class="tl-desc">${item.desc}</p>
+                </div>
+            `;
+            timelineContainer.appendChild(tlItem);
+        });
+
+        /* =========================================================================
+           3. INTERSECTION OBSERVERS (Animaciones al hacer Scroll)
+           ========================================================================= */
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Opcional: Dejar de observar una vez que es visible
+                    // scrollObserver.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        // Observar Paneles
+        document.querySelectorAll('.glass-panel').forEach(panel => scrollObserver.observe(panel));
+        // Observar Items de Timeline
+        document.querySelectorAll('.timeline-item').forEach(item => scrollObserver.observe(item));
+
+        /* =========================================================================
+           4. MOTOR DE PARTÍCULAS CANVAS (Simulando Nodos BackRub/PageRank)
+           ========================================================================= */
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+                // Colores de Google para las partículas
+                const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Rebotar en bordes
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function createParticles() {
+            particles = [];
+            // Ajustar cantidad de partículas según el tamaño de la pantalla para rendimiento
+            let particleCount = Math.floor(window.innerWidth / 15);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Dibujar líneas entre partículas cercanas (Simulando la red de enlaces PageRank)
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 - distance / 1200})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+
+        // Setup inicial y listeners de resize
+        window.addEventListener('resize', () => {
+            initCanvas();
+            createParticles();
+        });
+
+        initCanvas();
+        createParticles();
+        animateCanvas();
+
+    </script>
+</body>
+</html>
