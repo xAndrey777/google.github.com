@@ -46,7 +46,6 @@
             opacity: 0.6;
         }
 
-        /* Ambient Glow */
         .ambient-glow {
             position: fixed;
             top: 50%; left: 50%;
@@ -120,7 +119,6 @@
             position: relative;
         }
 
-        /* Panels Glassmorphism */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(24px);
@@ -155,6 +153,46 @@
             color: var(--text-muted);
             margin-bottom: 1.5rem;
         }
+
+        /* === GRID DE ALGORITMOS (NUEVA SECCIÓN) === */
+        .algo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .algo-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .algo-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .algo-card h3 {
+            font-family: 'Product Sans', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .algo-card .algo-year {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Colores dinámicos para las tarjetas de algoritmos */
+        .algo-card:nth-child(1):hover { border-color: var(--g-blue); box-shadow: 0 10px 30px rgba(66, 133, 244, 0.1); }
+        .algo-card:nth-child(2):hover { border-color: var(--g-red); box-shadow: 0 10px 30px rgba(234, 67, 53, 0.1); }
+        .algo-card:nth-child(3):hover { border-color: var(--g-yellow); box-shadow: 0 10px 30px rgba(251, 188, 5, 0.1); }
+        .algo-card:nth-child(4):hover { border-color: var(--g-green); box-shadow: 0 10px 30px rgba(52, 168, 83, 0.1); }
 
         /* === TIMELINE DE ALTO RENDIMIENTO === */
         .timeline-wrapper {
@@ -249,13 +287,11 @@
             line-height: 1.6;
         }
 
-        /* === ANIMACIONES === */
         @keyframes floatLogo {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
 
-        /* === RESPONSIVE === */
         @media (max-width: 900px) {
             .timeline-line { left: 30px; }
             .timeline-item, .timeline-item:nth-child(even) {
@@ -267,9 +303,7 @@
             .timeline-item:nth-child(odd) .timeline-content,
             .timeline-item:nth-child(even) .timeline-content { margin: 0; width: 100%; }
             .timeline-item:nth-child(odd) .timeline-dot,
-            .timeline-item:nth-child(even) .timeline-dot {
-                left: -58px; right: auto;
-            }
+            .timeline-item:nth-child(even) .timeline-dot { left: -58px; right: auto; }
             .glass-panel { padding: 2rem; }
         }
     </style>
@@ -289,7 +323,7 @@
             <span class="g-letter c-r">e</span>
         </div>
         <h1 class="hero-title">Organizando la información del mundo, haciéndola universalmente accesible y útil.</h1>
-        <div class="hero-code">> sudo execute PageRank_Algorithm.cpp</div>
+        <div class="hero-code">> sudo execute System_Init.cpp && load(history)</div>
     </header>
 
     <main class="main-container">
@@ -297,16 +331,38 @@
         <section class="glass-panel">
             <h2 class="panel-title">1.0 - El Génesis Matemático</h2>
             <p class="panel-text">La palabra "Google" no nació de un estudio de marketing, sino de un error de ortografía matemática. En 1920, el matemático estadounidense Edward Kasner le pidió a su sobrino de nueve años, Milton Sirotta, que inventara un nombre para un número gigantesco: un 1 seguido de cien ceros.</p>
-            <p class="panel-text">El niño respondió: <strong>"Googol"</strong> (Gúgol). Cuando Larry Page y Sergey Brin buscaban un nombre en 1997 que representara su misión de organizar una cantidad colosal de información, registraron el dominio basándose en este término, pero lo escribieron mal como "Google". El error se convirtió en la marca más valiosa del planeta.</p>
-            <div style="font-family: 'Roboto Mono'; color: var(--g-yellow); word-break: break-all; margin-top: 2rem; font-size: 0.8rem; opacity: 0.8;">
+            <p class="panel-text">El niño respondió: <strong>"Googol"</strong> (Gúgol). Cuando Larry Page y Sergey Brin buscaban un nombre en 1997 que representara su misión de organizar una cantidad colosal de información, registraron el dominio basándose en este término, pero lo escribieron mal como "Google".</p>
+            <div style="font-family: 'Roboto Mono'; color: var(--g-yellow); word-break: break-all; margin-top: 2rem; font-size: 0.8rem; opacity: 0.8; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
                 10,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000
             </div>
         </section>
 
         <section class="glass-panel">
-            <h2 class="panel-title">2.0 - BackRub y el PageRank</h2>
-            <p class="panel-text">Antes de 1996, los motores de búsqueda (como AltaVista o Yahoo) ordenaban los resultados basándose en cuántas veces aparecía una palabra clave en una página. Era fácil de manipular.</p>
-            <p class="panel-text">Page y Brin desarrollaron en Stanford un algoritmo llamado <strong>BackRub</strong>. La genialidad radicaba en tratar la web como una red de citas académicas. Si una página era enlazada por muchas otras páginas importantes, entonces esa página debía ser importante. Así nació <strong>PageRank</strong> (nombrado en honor a Larry Page), un sistema que evaluaba la calidad y cantidad de enlaces para determinar la relevancia de un sitio web. Internet pasó del caos al orden matemático.</p>
+            <h2 class="panel-title">2.0 - Las Eras del Algoritmo</h2>
+            <p class="panel-text">El buscador no es estático. Desde su concepción con PageRank (basado en enlaces), Google ha desplegado enormes redes neuronales y actualizaciones para combatir el spam y entender el lenguaje natural de los humanos.</p>
+            
+            <div class="algo-grid">
+                <div class="algo-card">
+                    <span class="algo-year">2011</span>
+                    <h3 style="color: var(--g-blue);">Google Panda</h3>
+                    <p class="panel-text" style="font-size: 0.95rem;">Diseñado para penalizar a los "content farms". Sitios web con contenido pobre, copiado o de baja calidad desaparecieron de la noche a la mañana, premiando la investigación original.</p>
+                </div>
+                <div class="algo-card">
+                    <span class="algo-year">2012</span>
+                    <h3 style="color: var(--g-red);">Google Penguin</h3>
+                    <p class="panel-text" style="font-size: 0.95rem;">El terror del Black Hat SEO. Penguin detectó y destruyó las redes de enlaces artificiales (granjas de links) que los webmasters usaban para engañar a PageRank.</p>
+                </div>
+                <div class="algo-card">
+                    <span class="algo-year">2013</span>
+                    <h3 style="color: var(--g-yellow);">Hummingbird</h3>
+                    <p class="panel-text" style="font-size: 0.95rem;">La primera vez que Google empezó a entender "conceptos" en lugar de palabras sueltas. Permitió las búsquedas conversacionales complejas ("¿Dónde está el café más cercano?").</p>
+                </div>
+                <div class="algo-card">
+                    <span class="algo-year">2019+</span>
+                    <h3 style="color: var(--g-green);">BERT y MUM</h3>
+                    <p class="panel-text" style="font-size: 0.95rem;">La integración de Inteligencia Artificial profunda (Transformers). El buscador ahora comprende el contexto, la intención y los matices del lenguaje en más de 70 idiomas simultáneamente.</p>
+                </div>
+            </div>
         </section>
 
         <section class="glass-panel" style="padding: 2rem; background: transparent; border: none; box-shadow: none; backdrop-filter: none;">
@@ -321,31 +377,41 @@
     </main>
 
     <footer style="text-align: center; padding: 4rem; color: var(--text-muted); font-family: 'Roboto Mono', monospace; font-size: 0.9rem;">
-        <p>System Exit(0); // 1998 - Presente</p>
+        <p>System Execute(); // 1998 - 2026 // END OF FILE</p>
     </footer>
 
     <script>
         /* =========================================================================
-           1. BASE DE DATOS MASIVA DE LA HISTORIA DE GOOGLE (JSON Array)
+           1. BASE DE DATOS MASIVA (EXPANDIDA A +25 HITOS HISTÓRICOS)
            ========================================================================= */
         const googleHistory = [
-            { year: "1995", title: "El Encuentro en Stanford", desc: "Larry Page (22 años) conoce a Sergey Brin (21 años). Brin es asignado para mostrarle a Page el campus de Stanford. Discrepan en todo, pero forjan una alianza histórica.", color: "var(--g-blue)" },
-            { year: "1996", title: "Proyecto BackRub", desc: "Comienzan a colaborar en un buscador que usa enlaces para determinar la importancia de páginas web. Lo ejecutan en los servidores de Stanford hasta que consume demasiado ancho de banda.", color: "var(--g-red)" },
-            { year: "1997", title: "google.com", desc: "El 15 de septiembre se registra oficialmente el dominio Google.com, nacido del error ortográfico de 'Googol'.", color: "var(--g-yellow)" },
-            { year: "1998", title: "El Garaje y el Primer Inversor", desc: "Andy Bechtolsheim firma un cheque de 100.000$ a nombre de 'Google Inc.', una empresa que aún no existía. Se instalan en el garaje de Susan Wojcicki (futura CEO de YouTube). Nace el primer Doodle (Burning Man).", color: "var(--g-green)" },
-            { year: "2000", title: "AdWords: El Motor Financiero", desc: "Google se convierte en el buscador más grande del mundo y lanza AdWords con 350 clientes, un sistema de anuncios no intrusivos basados en texto que cambiaría la publicidad digital para siempre.", color: "var(--g-blue)" },
-            { year: "2001", title: "Eric Schmidt y Google Imágenes", desc: "Larry y Sergey contratan a Eric Schmidt como CEO para 'supervisar a los adultos'. Nace Google Imágenes motivado por la inmensa demanda de fotos del vestido verde de Jennifer Lopez en los Grammy.", color: "var(--g-red)" },
-            { year: "2004", title: "Gmail y la Salida a Bolsa", desc: "El 1 de abril lanzan Gmail con 1GB de almacenamiento (100 veces más que la competencia). Muchos creyeron que era una broma. En agosto, salen a bolsa (IPO) a 85$ la acción.", color: "var(--g-yellow)" },
-            { year: "2005", title: "Google Maps y Android", desc: "Se lanza Google Maps. Además, adquieren discretamente una pequeña startup de software móvil llamada Android por 50 millones de dólares.", color: "var(--g-green)" },
-            { year: "2006", title: "La Era del Video y el Diccionario", desc: "Google compra YouTube por 1.650 millones de dólares. El diccionario de Oxford y Merriam-Webster añaden el verbo 'google' a sus páginas.", color: "var(--g-blue)" },
-            { year: "2008", title: "Nace Chrome", desc: "Google lanza su propio navegador web de código abierto, Google Chrome. Hoy en día es el navegador más utilizado del planeta.", color: "var(--g-red)" },
-            { year: "2015", title: "Reestructuración: Alphabet", desc: "Larry Page anuncia la creación de Alphabet Inc., un holding para agrupar a Google y todas sus ramificaciones (Waymo, DeepMind, Calico). Sundar Pichai se convierte en CEO de Google.", color: "var(--g-yellow)" },
-            { year: "2016", title: "IA First: DeepMind", desc: "AlphaGo, de Google DeepMind, derrota al campeón mundial Lee Sedol en el complejo juego de mesa Go, marcando un hito en la historia de la Inteligencia Artificial.", color: "var(--g-green)" },
-            { year: "2023", title: "La Era de Gemini", desc: "En respuesta a la revolución generativa, Google lanza Gemini, su modelo de Inteligencia Artificial multimodal más potente y capaz, integrándolo en el buscador y el ecosistema.", color: "var(--g-blue)" }
+            { year: "1995", title: "El Encuentro en Stanford", desc: "Larry Page (22 años) conoce a Sergey Brin (21 años). Brin le muestra el campus de Stanford. Discrepan en casi todo, pero forjan una alianza histórica.", color: "var(--g-blue)" },
+            { year: "1996", title: "Proyecto BackRub", desc: "Comienzan a colaborar en un buscador que usa enlaces para determinar la importancia de páginas web. Lo ejecutan en los servidores de Stanford.", color: "var(--g-red)" },
+            { year: "1997", title: "El Dominio google.com", desc: "El 15 de septiembre se registra oficialmente el dominio Google.com.", color: "var(--g-yellow)" },
+            { year: "1998", title: "El Garaje de Susan", desc: "Andy Bechtolsheim firma un cheque de 100.000$. Se instalan en el garaje de Susan Wojcicki. Nace el primer Doodle (Burning Man).", color: "var(--g-green)" },
+            { year: "2000", title: "Lanzamiento de AdWords", desc: "Google lanza AdWords con 350 clientes. En lugar de banners molestos, usan anuncios de texto basados en la búsqueda. El modelo de negocio perfecto había nacido.", color: "var(--g-blue)" },
+            { year: "2001", title: "Google Imágenes", desc: "Nace Google Imágenes, motivado por la masiva e insatisfecha demanda mundial de fotos del vestido verde de Jennifer Lopez en los Grammy.", color: "var(--g-red)" },
+            { year: "2002", title: "Google News", desc: "Tras el 11 de septiembre, la gente buscaba información en tiempo real. Krishna Bharat crea Google News, agregando titulares de miles de fuentes noticiosas en un solo lugar.", color: "var(--g-yellow)" },
+            { year: "2004", title: "Gmail y Salida a Bolsa", desc: "Lanzan Gmail con 1GB de almacenamiento el 1 de abril (muchos pensaron que era broma). En agosto, Google sale a bolsa (IPO), convirtiendo a muchos de sus primeros empleados en millonarios.", color: "var(--g-green)" },
+            { year: "2005", title: "Maps y la compra de Android", desc: "El mundo se vuelve navegable con Google Maps. En paralelo, adquieren discretamente una pequeña startup de software móvil llamada Android por 50 millones de dólares.", color: "var(--g-blue)" },
+            { year: "2006", title: "Adquisición de YouTube", desc: "Google compra YouTube por 1.650 millones de dólares en acciones. Además, lanzan Google Docs y Spreadsheets, atacando el dominio de Microsoft Office.", color: "var(--g-red)" },
+            { year: "2007", title: "El mundo a pie de calle", desc: "Debuta Street View en cinco ciudades de EE.UU., mostrando imágenes panorámicas de 360 grados tomadas desde coches equipados con cámaras especiales.", color: "var(--g-yellow)" },
+            { year: "2008", title: "Nace Chrome", desc: "Google lanza su propio navegador web, Google Chrome, enfocado en la velocidad y la seguridad. Rápidamente dominaría el mercado de navegadores.", color: "var(--g-green)" },
+            { year: "2010", title: "Google X (Moonshots)", desc: "Se funda Google X, un laboratorio secreto dirigido por Astro Teller para buscar innovaciones radicales (coches autónomos, globos de internet, lentes de contacto inteligentes).", color: "var(--g-blue)" },
+            { year: "2011", title: "El experimento Google+", desc: "En un intento de competir con Facebook, lanzan Google+. A pesar de forzar su integración, nunca logra la adopción masiva y se convierte en uno de sus mayores fracasos.", color: "var(--g-red)" },
+            { year: "2012", title: "Google Play Store", desc: "Unifican Android Market, Google Music y Google eBookstore bajo una sola marca masiva: Google Play. Anuncian también el prototipo de Google Glass.", color: "var(--g-yellow)" },
+            { year: "2014", title: "Material Design", desc: "Google presenta 'Material Design', un lenguaje de diseño unificado que estandariza la estética de Android y de todas las aplicaciones web de la compañía.", color: "var(--g-green)" },
+            { year: "2015", title: "Nace Alphabet Inc.", desc: "Larry Page anuncia la creación de Alphabet, un holding para separar el buscador de las empresas experimentales (Waymo, Calico). Sundar Pichai asume como CEO de Google.", color: "var(--g-blue)" },
+            { year: "2016", title: "Hardware e IA: Pixel y AlphaGo", desc: "Google lanza el primer teléfono Pixel (Made by Google). Mientras tanto, su IA AlphaGo hace historia al derrotar al campeón mundial Lee Sedol en el complejo juego Go.", color: "var(--g-red)" },
+            { year: "2019", title: "Supremacía Cuántica", desc: "El ordenador cuántico de Google, Sycamore, realiza en 200 segundos un cálculo que le habría tomado 10.000 años al superordenador tradicional más potente del mundo.", color: "var(--g-yellow)" },
+            { year: "2020", title: "Revolución Biológica: AlphaFold", desc: "DeepMind resuelve el problema del plegamiento de proteínas con AlphaFold, un avance titánico que acelera el descubrimiento de fármacos y cura de enfermedades.", color: "var(--g-green)" },
+            { year: "2023", title: "La Era Generativa: Gemini", desc: "En respuesta al auge de ChatGPT, Google lanza Bard, que más tarde evoluciona a Gemini, un modelo de inteligencia artificial multimodal diseñado desde cero.", color: "var(--g-blue)" },
+            { year: "2024", title: "Ecosistema Gemini Integrado", desc: "La Inteligencia Artificial se incrusta en el núcleo del buscador (AI Overviews), Workspace y Android, marcando el mayor cambio en la forma de buscar información desde 1998.", color: "var(--g-red)" },
+            { year: "2026", title: "Presente: Agentes Autónomos", desc: "La consolidación de modelos de lenguaje masivos y tecnología cuántica mantiene a Google en la frontera tecnológica, redefiniendo la relación entre humanos e información.", color: "var(--g-yellow)" }
         ];
 
         /* =========================================================================
-           2. RENDERIZADO DINÁMICO DEL DOM (Inyectando la historia)
+           2. RENDERIZADO DEL DOM (Inyectando los +25 eventos)
            ========================================================================= */
         const timelineContainer = document.getElementById('dynamic-timeline');
 
@@ -365,7 +431,7 @@
         });
 
         /* =========================================================================
-           3. INTERSECTION OBSERVERS (Animaciones al hacer Scroll)
+           3. INTERSECTION OBSERVERS (Para animar las cosas al hacer scroll)
            ========================================================================= */
         const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
 
@@ -373,19 +439,15 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Opcional: Dejar de observar una vez que es visible
-                    // scrollObserver.unobserve(entry.target); 
                 }
             });
         }, observerOptions);
 
-        // Observar Paneles
         document.querySelectorAll('.glass-panel').forEach(panel => scrollObserver.observe(panel));
-        // Observar Items de Timeline
         document.querySelectorAll('.timeline-item').forEach(item => scrollObserver.observe(item));
 
         /* =========================================================================
-           4. MOTOR DE PARTÍCULAS CANVAS (Simulando Nodos BackRub/PageRank)
+           4. MOTOR DE PARTÍCULAS CANVAS (Mantenemos la simulación PageRank)
            ========================================================================= */
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
@@ -404,7 +466,6 @@
                 this.vx = (Math.random() - 0.5) * 0.5;
                 this.vy = (Math.random() - 0.5) * 0.5;
                 this.radius = Math.random() * 2 + 1;
-                // Colores de Google para las partículas
                 const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
             }
@@ -412,8 +473,6 @@
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-
-                // Rebotar en bordes
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
             }
@@ -428,7 +487,6 @@
 
         function createParticles() {
             particles = [];
-            // Ajustar cantidad de partículas según el tamaño de la pantalla para rendimiento
             let particleCount = Math.floor(window.innerWidth / 15);
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
@@ -442,7 +500,6 @@
                 particles[i].update();
                 particles[i].draw();
 
-                // Dibujar líneas entre partículas cercanas (Simulando la red de enlaces PageRank)
                 for (let j = i; j < particles.length; j++) {
                     let dx = particles[i].x - particles[j].x;
                     let dy = particles[i].y - particles[j].y;
@@ -461,7 +518,6 @@
             requestAnimationFrame(animateCanvas);
         }
 
-        // Setup inicial y listeners de resize
         window.addEventListener('resize', () => {
             initCanvas();
             createParticles();
