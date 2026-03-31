@@ -3,95 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google: El Archivo Maestro del Universo Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700&family=Roboto+Mono:wght@300;500&family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <title>Google Archive: The Master Terminal (v.2026)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Product+Sans:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&family=Lora:ital,wght@1,400&family=Inter:wght@100;300;400;600;900&display=swap" rel="stylesheet">
     <style>
+        /* === ARQUITECTURA DE ESTILOS CORE (SYSTEM DESIGN) === */
         :root {
             --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
-            --bg: #030308; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.08);
-            --text: #ffffff; --muted: #9aa0a6;
+            --bg-ultra-dark: #000000; --text-primary: #ffffff; --text-secondary: #9aa0a6;
+            --glass-bg: rgba(20, 20, 20, 0.3); --glass-border: rgba(255, 255, 255, 0.06);
+            --font-main: 'Inter', sans-serif; --font-code: 'Roboto Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; 
-            overflow-x: hidden; scroll-behavior: smooth;
-        }
-
-        /* --- CORRECCIÓN DE CAPAS (Z-INDEX) --- */
-        #canvas-bg { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.3; pointer-events: none; }
-        #scroll-progress { position: fixed; top: 0; left: 0; height: 4px; z-index: 1000; background: linear-gradient(90deg, var(--g-blue), var(--g-red), var(--g-yellow), var(--g-green)); width: 0%; }
-
-        header {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            align-items: center; position: relative; z-index: 10; text-align: center;
-            background: radial-gradient(circle at center, rgba(66, 133, 244, 0.15) 0%, transparent 70%);
-        }
-
-        /* --- LOGO CORREGIDO --- */
-        .brand-logo { font-family: 'Product Sans'; font-size: clamp(4rem, 15vw, 10rem); font-weight: 900; letter-spacing: -5px; margin-bottom: 10px; }
-        .brand-logo span:nth-child(1), .brand-logo span:nth-child(4) { color: var(--g-blue); }
-        .brand-logo span:nth-child(2), .brand-logo span:nth-child(6) { color: var(--g-red); }
-        .brand-logo span:nth-child(3) { color: var(--g-yellow); }
-        .brand-logo span:nth-child(5) { color: var(--g-green); }
-
-        .sys-status { font-family: 'Roboto Mono'; color: var(--g-green); font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 2px; }
-
-        /* --- ESTADÍSTICAS HERO --- */
-        .stats-bar {
-            display: flex; gap: 50px; margin-top: 60px; flex-wrap: wrap; justify-content: center;
-        }
-        .stat-item { text-align: center; border-left: 1px solid var(--border); padding-left: 20px; }
-        .stat-num { font-size: 2.5rem; font-weight: 900; display: block; background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- CONTENIDO DINÁMICO --- */
-        .master-container { max-width: 1300px; margin: 0 auto; padding: 100px 20px; position: relative; z-index: 20; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
         
-        .info-panel {
-            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border);
-            border-radius: 30px; padding: 60px; margin-bottom: 100px;
-            opacity: 0; transform: translateY(40px); transition: 0.8s all ease;
+        body { 
+            background-color: var(--bg-ultra-dark); color: var(--text-primary);
+            font-family: var(--font-main); overflow-x: hidden; scroll-behavior: smooth;
         }
-        .info-panel.visible { opacity: 1; transform: translateY(0); }
 
-        h2.section-title { font-family: 'Product Sans'; font-size: 3.5rem; margin-bottom: 25px; }
-        .text-body { font-size: 1.2rem; line-height: 1.8; color: var(--muted); font-weight: 300; }
+        /* Scroll Progress High-End (Colores de Google) */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+            background: linear-gradient(90deg, var(--g-blue), var(--g-red), var(--g-yellow), var(--g-green));
+            z-index: 10000; box-shadow: 0 0 10px var(--g-blue);
+        }
 
-        /* --- LÍNEA DE TIEMPO --- */
-        .timeline { position: relative; padding: 40px 0; }
-        .timeline::before { content: ''; position: absolute; left: 50%; width: 1px; height: 100%; background: var(--border); transform: translateX(-50%); }
+        /* === FONDO INTERACTIVO ORIGINAL (PAGERANK NETWORK) === */
+        #pagerank-canvas { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.5; }
+        .ambient-glow {
+            position: fixed; top: 50%; left: 50%; width: 90vw; height: 90vh;
+            transform: translate(-50%, -50%); z-index: -1;
+            background: radial-gradient(circle, rgba(66, 133, 244, 0.08) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+        }
 
-        .event { width: 45%; margin-bottom: 80px; position: relative; opacity: 0; transition: 0.6s; }
-        .event.left { margin-right: auto; text-align: right; transform: translateX(-30px); }
-        .event.right { margin-left: auto; text-align: left; transform: translateX(30px); }
-        .event.visible { opacity: 1; transform: translateX(0); }
+        /* === HEADER EXTREMO (ESTILO CAPTURA ORIGINAL) === */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 60px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
 
-        .event-card { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
-        .e-year { font-family: 'Roboto Mono'; color: var(--g-yellow); font-size: 2.5rem; font-weight: 900; }
+        /* Mantenimiento de links exactos */
+        .nav-logo { font-family: 'Product Sans'; font-size: 1.8rem; font-weight: 700; color: var(--g-blue); }
+        .nav-links { display: flex; gap: 35px; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary); }
+        .nav-links a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-primary); }
 
-        /* --- FOOTER --- */
-        footer { padding: 100px 20px; text-align: center; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
+        /* Indicador de estado original */
+        .status-dot { color: var(--g-green); font-family: var(--font-code); font-size: 0.9rem; letter-spacing: 2px; }
 
-        @media (max-width: 768px) {
-            .timeline::before { left: 20px; }
-            .event { width: 100%; margin-left: 50px !important; text-align: left !important; }
+        header { height: 110vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 10; padding: 2rem; }
+
+        /* Título original en monospace */
+        .monospace-title { font-family: var(--font-code); color: var(--g-blue); font-size: 0.9rem; font-weight: 300; letter-spacing: 5px; margin-bottom: 2rem; }
+
+        /* Logo original con colores exactos */
+        .original-logo { font-family: 'Product Sans'; font-size: clamp(6rem, 18vw, 12rem); font-weight: 900; letter-spacing: -6px; margin-bottom: 1.5rem; }
+        .original-logo span:nth-child(1), .original-logo span:nth-child(4) { color: var(--g-blue); }
+        .original-logo span:nth-child(2), .original-logo span:nth-child(6) { color: var(--g-red); }
+        .original-logo span:nth-child(3) { color: var(--g-yellow); }
+        .original-logo span:nth-child(5) { color: var(--g-green); }
+
+        /* Frase original en Serif dorada */
+        .lora-phrase { font-family: 'Lora', serif; font-size: clamp(1.5rem, 4vw, 2.8rem); font-style: italic; color: #f5f5f5; max-width: 900px; text-align: center; line-height: 1.4; font-weight: 400; }
+        .lora-phrase em { font-weight: 600; font-style: normal; color: var(--g-yellow); }
+
+        /* === BARRA DE ESTADÍSTICAS ORIGINALES === */
+        .original-stats { display: flex; gap: 80px; margin-top: 60px; flex-wrap: wrap; justify-content: center; }
+        .stat-item { text-align: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px; }
+        .stat-num { font-size: 3.5rem; font-weight: 900; display: block; color: var(--text-primary); }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; }
+
+        /* === SECCIONES DE CONTENIDO MAESTRO === */
+        .container { max-width: 1400px; margin: 0 auto; padding: 100px 40px; position: relative; z-index: 20; }
+        
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 25px; margin-bottom: 120px; }
+
+        /* Transparencia y cristal en paneles inferiores */
+        .card {
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 30px; padding: 60px;
+            transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1); position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(50px);
+        }
+        .card.visible { opacity: 1; transform: translateY(0); }
+        .card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.05); }
+
+        .c-full { grid-column: span 12; }
+        .c-half { grid-column: span 6; }
+        .c-third { grid-column: span 4; }
+
+        .card h2 { font-family: 'Product Sans'; font-size: 3.5rem; margin-bottom: 25px; font-weight: 900; }
+        .card p { font-size: 1.2rem; line-height: 1.8; color: var(--text-secondary); font-weight: 300; }
+
+        /* Estilo de lista para datos */
+        .data-list { list-style: none; margin-top: 20px; color: var(--text-secondary); line-height: 2; }
+        .data-list li::before { content: '>'; color: var(--g-green); margin-right: 10px; font-family: var(--font-code); }
+
+        /* === TIMELINE MAESTRO (INFERIOR) === */
+        .timeline-wrapper { position: relative; padding: 50px 0; }
+        .timeline-wrapper::before { content: ''; position: absolute; left: 50%; width: 1px; height: 100%; background: var(--glass-border); transform: translateX(-50%); }
+
+        .t-entry { width: 45%; margin-bottom: 120px; position: relative; opacity: 0; transform: translateY(50px); transition: 1s ease-out; }
+        .t-entry.left { margin-right: auto; text-align: right; }
+        .t-entry.right { margin-left: auto; text-align: left; }
+        .t-entry.visible { opacity: 1; transform: translateY(0); }
+
+        .t-box { background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .t-year { font-family: var(--font-code); font-size: 3.5rem; font-weight: 900; color: var(--g-yellow); }
+        .t-title { font-size: 1.8rem; margin: 10px 0; color: var(--g-blue); }
+        
+        /* === FOOTER MAESTRO === */
+        footer {
+            padding: 150px 50px; text-align: center; border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary); font-size: 0.8rem; letter-spacing: 2.5px;
+            background: linear-gradient(to bottom, transparent, #020205);
+        }
+
+        /* === ANIMACIONES CORE === */
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .float-anim { animation: floatLogo 6s ease-in-out infinite; }
+
+        /* === RESPONSIVE MODERNO === */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .c-half, .c-third { grid-column: span 12; }
+            .original-stats { gap: 30px; }
+            .timeline-wrapper::before { left: 20px; }
+            .t-entry { width: 90%; margin-left: 50px !important; text-align: left !important; }
         }
     </style>
 </head>
 <body>
 
     <div id="scroll-progress"></div>
-    <canvas id="canvas-bg"></canvas>
+    <canvas id="pagerank-canvas"></canvas>
+    <div class="ambient-glow"></div>
+
+    <nav>
+        <div class="nav-links">
+            <a href="#infra">Infraestructura</a>
+            <a href="#ai">Inteligencia</a>
+            <a href="#history">Historial</a>
+            <a href="# सीमेंटेरि">Fracasos</a>
+        </div>
+        <div class="status-dot">● SISTEMA ACTIVO V2.0</div>
+    </nav>
 
     <header>
-        <div class="sys-status">● SISTEMA OPERATIVO ACTIVO V.2026</div>
-        <div class="brand-logo">
+        <p class="monospace-title">// EL ARCHIVO DEFINITIVO DEL UNIVERSO DIGITAL //</p>
+        <div class="original-logo">
             <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
         </div>
-        <p style="font-size: 1.5rem; font-weight: 100; color: var(--muted);">Organizando el <span style="color: var(--g-yellow); font-weight: 400;">conocimiento infinito</span> del mundo.</p>
+        <p class="lora-phrase">Organizando el <span style="font-weight: 600; color: var(--g-yellow);">conocimiento infinito</span> del mundo desde 1998.</p>
         
-        <div class="stats-bar">
+        <div class="original-stats">
             <div class="stat-item"><span class="stat-num">8.5B</span><span class="stat-label">Búsquedas / Día</span></div>
             <div class="stat-item"><span class="stat-num">20PB</span><span class="stat-label">Datos Procesados</span></div>
             <div class="stat-item"><span class="stat-num">2T+</span><span class="stat-label">Valoración Mercado</span></div>
@@ -99,99 +165,180 @@
         </div>
     </header>
 
-    <main class="master-container">
-        
-        <section class="info-panel" id="genesis">
-            <h2 class="section-title">01. El Génesis de la Información</h2>
-            <p class="text-body">En 1995, en la Universidad de Stanford, nació una idea que parecía imposible: descargar internet entero. Larry Page y Sergey Brin diseñaron <strong>PageRank</strong>, un algoritmo inspirado en las citas académicas: una página es importante si otras páginas importantes la mencionan. Esta premisa matemática destrozó a competidores como Yahoo! y Altavista.</p>
-        </section>
-
-        <section class="info-panel">
-            <h2 class="section-title">02. Infraestructura Planetaria</h2>
-            <p class="text-body">Para que Google responda en 0.2 segundos, utiliza la red de fibra óptica privada más grande del planeta. Sus centros de datos utilizan inteligencia artificial para auto-refrigerarse, ahorrando un 40% de energía. Han desarrollado sus propios chips, los <strong>TPU (Tensor Processing Units)</strong>, para liderar la carrera de la IA generativa.</p>
-        </section>
-
-        <div class="timeline" id="main-timeline">
+    <div class="container">
+        <div class="bento-grid" id="infra">
+            <div class="card c-full">
+                <h2>01. La Red Global de Nervios</h2>
+                <p>Google no es una web; es el dueño de la fibra óptica transoceánica más extensa del planeta. Sus cables (como 'Curie' o 'Grace Hopper') conectan continentes con latencias de microsegundos. La red Google maneja más del 40% del tráfico de internet en horas punta. Sus centros de datos operan bajo **Borg**, el precursor de Kubernetes.</p>
             </div>
+            <div class="card c-half">
+                <h3>TPU: El Silicio de la IA</h3>
+                <p>Google diseñó los Tensor Processing Units (Chips custom). Están optimizados para la nucleosíntesis matemática requerida por el Deep Learning.</p>
+            </div>
+            <div class="card c-half">
+                <h3>Spanner: Tiempo Atómico</h3>
+                <p>La base de datos global sincrónica que sincroniza datos a nivel mundial utilizando relojes atómicos en sus racks.</p>
+            </div>
+        </div>
 
-    </main>
+        <div class="bento-grid" id="ai">
+            <div class="card c-third">
+                <h3>2012: Deep Learning</h3>
+                <p>Una red neuronal de 16k núcleos aprende a identificar gatos en YouTube sin saber qué es un gato.</p>
+            </div>
+            <div class="card c-third">
+                <h3>2017: Transformers</h3>
+                <p>El paper "Attention is All You Need" de Google definió la arquitectura que hoy usan todos los LLMs (ChatGPT, Gemini).</p>
+            </div>
+            <div class="card c-third">
+                <h3>2024: Gemini Ultra</h3>
+                <p>Razonamiento multimodal nativo: la IA ahora ve, oye, razona y ejecuta tareas sobre flujos de video continuos.</p>
+            </div>
+        </div>
+
+        <div class="timeline-wrapper" id="history">
+            <div id="dynamic-timeline"></div>
+        </div>
+
+        <div class="bento-grid" id=" सीमेंटेरि">
+            <div class="card c-full grave-card">
+                <h2>Killed by Google // <span style="color:var(--g-red);">99+ Fallos</span></h2>
+                <p>Para innovar hay que destruir. Google ha ejecutado decenas de productos queridos para mantener el enfoque técnica y comercialmente.</p>
+                <ul class="data-list">
+                    <li>Google+ (El rival fallido de Facebook)</li>
+                    <li>Google Stadia (El sueño del cloud-gaming)</li>
+                    <li>Google Wave (Nadie lo entendió)</li>
+                    <li>Orkut (El éxito de Brasil que murió)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <footer>
-        <p>GOOGLE ARCHIVE PROJECT // NO DATA IS LOST</p>
-        <p>© 1998 - 2026 // Distributed by Alphabet Inc.</p>
+        <p>TERMINAL SYSTEM // DATABASE DUMP COMPLETE // 2026</p>
+        <p>© ALPHABET INC. MOONSHOT DIVISION</p>
     </footer>
 
     <script>
-        // --- BASE DE DATOS MASIVA (Expandida para longitud máxima) ---
-        const historyData = [
-            {y:"1995", t:"El Encuentro", d:"Larry Page conoce a Sergey Brin en Stanford. Empieza la colaboración en BackRub."},
-            {y:"1997", t:"Dominio", d:"Se registra Google.com el 15 de septiembre. Error de deletreo de Googol."},
-            {y:"1998", t:"El Garaje", d:"Se constituyen como empresa en el garaje de Susan Wojcicki con $100,000."},
-            {y:"2000", t:"AdWords", d:"Lanzan el motor económico de la web. Publicidad basada en la intención."},
-            {y:"2001", t:"Schmidt", d:"Eric Schmidt se une como CEO para 'supervisar a los adultos'."},
-            {y:"2004", t:"Gmail & IPO", d:"Gmail rompe esquemas con 1GB. Salen a bolsa a $85 la acción."},
-            {y:"2005", t:"Android & Maps", d:"Compra de Android por $50M. El mundo se vuelve digital en Maps."},
-            {y:"2006", t:"YouTube", d:"Adquisición de la plataforma de video por $1.65 mil millones."},
-            {y:"2008", t:"Chrome", d:"Lanzamiento del navegador que dominaría el estándar web."},
-            {y:"2012", t:"Drive", d:"La nube se vuelve el centro de trabajo de millones de personas."},
-            {y:"2015", t:"Alphabet", d:"Reorganización masiva. Google se vuelve subsidiaria de Alphabet."},
-            {y:"2016", t:"DeepMind", d:"AlphaGo derrota al campeón mundial de Go. Comienza la era de la IA."},
-            {y:"2019", t:"Cuántica", d:"Logran la supremacía cuántica con el procesador Sycamore."},
-            {y:"2023", t:"Gemini", d:"Lanzamiento del modelo multimodal más avanzado para competir en IA."},
-            {y:"2024", t:"IA Search", d:"Integración total de resúmenes generativos en el buscador principal."},
-            {y:"2026", t:"Agentes", d:"Evolución de la IA hacia asistentes autónomos que ejecutan tareas complejas."}
+        /* === BASE DE DATOS MASIVA (Inyectada para ahorrar espacio) === */
+        const googleHistory = [
+            {year: "1995", title: "Génesis", desc: "Larry conoce a Sergey en Stanford. Comienza la colaboración en BackRub."},
+            {year: "1997", title: "El Dominio", desc: "Se registra oficialmente google.com el 15 de septiembre."},
+            {year: "1998", title: "Garaje & Inc.", d: "Constitución como empresa. Cheque de 100k de Andy Bechtolsheim."},
+            {year: "1999", t: "Salgada de Garaje", d: "Se mudan a la primera oficina en Palo Alto con 8 empleados."},
+            {year: "2000", t: "AdWords", d: "Lanzan el motor económico de la web. Publicidad basada en la búsqueda."},
+            {year: "2001", t: "Schmidt", d: "Eric Schmidt se une como CEO para 'supervisar a los adultos'."},
+            {year: "2002", t: "Google News", d: "Tras el 11/s, unifican titulares de miles de fuentes noticiosas."},
+            {year: "2003", t: "AdSense", d: "Democratizan los ingresos web para pequeños creadores."},
+            {year: "2004", t: "Gmail & IPO", d: "Lanzan Gmail con 1GB el 1 de abril. Salida a bolsa a $85."},
+            {year: "2005", t: "Maps & Android", d: "Adquieren Where 2 Tech y Android. El mundo se vuelve digital."},
+            {year: "2006", t: "YouTube", d: "Compra de la plataforma de video por 1.65B$. Mejor trato de la historia."},
+            {year: "2007", t: "Street View", d: "El mundo a pie de calle gracias a cámaras panorámicas."},
+            {year: "2008", t: "Chrome v1", d: "Lanzan el navegador que destronaría a Internet Explorer."},
+            {year: "2010", t: "Google X", d: "Se funda el laboratorio secreto para Moonshots (Coches autónomos)."},
+            {year: "2011", t: "Google Panda", d: "Actualización masiva que eliminó granjas de contenido basura."},
+            {year: "2012", t: "Knowledge Graph", d: "Entienden entidades y conceptos, no solo palabras."},
+            {year: "2014", t: "DeepMind", d: "Compra de la empresa líder en IA. AlphaGo en desarrollo."},
+            {year: "2015", t: "Alphabet", d: "Google se reorganiza masivamente como subsidiaria de Alphabet Inc."},
+            {year: "2016", t: "AlphaGo", d: "Vencen al campeón mundial de Go, hito histórico en IA."},
+            {year: "2017", t: "Transformers", d: "El paper que definió la arquitectura de todos los LLMs modernos."},
+            {year: "2019", t: "Supremacía Cuántica", d: "Sycamore resuelve en 200s lo que llevaría 10 mil años."},
+            {year: "2023", t: "Gemini", d: "Pivote masivo hacia la IA generativa masiva multimodal."},
+            {year: "2024", t: "IA Everywhere", d: "Integración profunda en el Buscador (AI Overviews) y Workspace."},
+            {year: "2026", t: "Search 3.0", d: "El buscador ya no entrega enlaces, entrega respuestas sintetizadas."}
         ];
 
-        const timeline = document.getElementById('main-timeline');
-        historyData.forEach((item, index) => {
+        /* === RENDERIZADO DEL DOM === */
+        const timeline = document.getElementById('dynamic-timeline');
+        googleHistory.forEach((item, index) => {
             const side = index % 2 === 0 ? 'left' : 'right';
             timeline.innerHTML += `
-                <div class="event ${side}">
-                    <div class="event-card">
-                        <span class="e-year">${item.y}</span>
-                        <h3 style="margin:10px 0; color:var(--g-blue);">${item.t}</h3>
-                        <p style="color:var(--muted); font-size:0.9rem;">${item.d}</p>
+                <div class="t-entry ${side}">
+                    <div class="t-box">
+                        <span class="t-year">${item.year}</span>
+                        <h3 class="t-title">${item.title || item.t}</h3>
+                        <p style="color:var(--text-secondary); line-height:1.6;">${item.desc || item.d}</p>
                     </div>
                 </div>
             `;
         });
 
-        // --- MOTOR VISUAL CANVAS (PAGERANK NETWORK) ---
-        const canvas = document.getElementById('canvas-bg');
+        /* === MOTOR VISUAL CANVAS (PAGERANK NETWORK) MANTENIDO === */
+        const canvas = document.getElementById('pagerank-canvas');
         const ctx = canvas.getContext('2d');
-        let points = [];
+        let width, height, columns;
+        let drops = [];
 
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            points = [];
-            for(let i=0; i<100; i++) points.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5});
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
 
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255,255,255,0.2)";
-            points.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>canvas.width) p.vx *= -1;
-                if(p.y<0 || p.y>canvas.height) p.vy *= -1;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
+        class Node {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.radius = Math.random() * 2 + 1;
+                const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0 || this.x > width) this.vx *= -1;
+                if(this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color; ctx.fill();
+            }
+        }
+
+        function createNodes() {
+            drops = [];
+            let particleCount = Math.floor(window.innerWidth / 15);
+            for(let i=0; i<particleCount; i++) {
+                drops.push(new Node());
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            drops.forEach((n, i) => {
+                n.update(); n.draw();
+                for(let j=i; j<drops.length; j++) {
+                    let d = Math.hypot(n.x - drops[j].x, n.y - drops[j].y);
+                    if(d < 120) {
+                        ctx.beginPath(); ctx.strokeStyle = `rgba(255,255,255,${0.1 - d/1200})`;
+                        ctx.lineWidth = 0.5; ctx.moveTo(n.x, n.y); ctx.lineTo(drops[j].x, drops[j].y); ctx.stroke();
+                    }
+                }
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animateCanvas);
         }
 
-        // --- OBSERVERS ---
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
+        /* === SCROLL & REVEAL EXTREMO === */
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .t-entry').forEach(el => scrollObserver.observe(el));
 
         window.addEventListener('scroll', () => {
             const scroll = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
             document.getElementById('scroll-progress').style.width = scroll + "%";
         });
 
-        window.onload = () => { init(); draw(); document.querySelectorAll('.info-panel, .event').forEach(el => observer.observe(el)); };
-        window.onresize = init;
+        /* === INIT === */
+        window.onload = () => { initCanvas(); createNodes(); animateCanvas(); };
+        window.onresize = () => { initCanvas(); createNodes(); };
     </script>
 </body>
 </html>
